@@ -7,11 +7,11 @@ import path_config
 
 flow_file_path = path_config.flow_file_path
 
-def main():
+
+def draw_traffic_rate(file_name):
     x = []
     y = []
-
-    with open(flow_file_path + '1.0.0.1-128.0.0.1.csv', 'r') as flow:
+    with open(flow_file_path + file_name, 'r') as flow:
         line = flow.readline()
         l = line.split(',')
         count = 0
@@ -31,14 +31,15 @@ def main():
                 t = t + 1
             else:
                 sum_length = sum_length + length
-
             line = flow.readline()
-
     plt.plot(x, y, label="traffic rate")
-
     plt.legend()
-
     plt.show()
+
+
+def main():
+    draw_traffic_rate('1.0.0.2-128.0.0.2.csv')
+
 
 if __name__ == '__main__':
     main()
