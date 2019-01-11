@@ -9,6 +9,8 @@ flow_file_path = path_config.flow_file_path
 
 
 def draw_traffic_rate(file_name):
+    """Draw traffic rate figure from datesets
+    """
     x = []
     y = []
     with open(flow_file_path + file_name, 'r') as flow:
