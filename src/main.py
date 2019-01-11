@@ -1,29 +1,22 @@
-
-# path = 'C:\Users\Yansen XU\Documents\programs\skype_trace\skype_e2e_trace.csv'
-
 import matplotlib.pyplot as plt
 import numpy as np
 import time
 import preprecess_data
+import os
+import path_config
 
-
-data_file_path = '/Users/yansenxu/Documents/research/programs/skypetrace/skype_e2e_trace.csv'
-# "No.","Time","Source","Destination","Protocol","Length","Info"
-flow_files_path = '/Users/yansenxu/Documents/research/programs/rl-based-sfc-scaling/flow_data/'
+flow_file_path = path_config.flow_file_path
 
 def main():
-    # x = np.linspace(0, 10, 100)
-    # y = x + np.random.randn(100) 
     x = []
     y = []
 
-    with open(flow_files_path + '1.0.0.6-128.0.0.1.csv', 'r') as flow:
+    with open(flow_file_path + '1.0.0.1-128.0.0.1.csv', 'r') as flow:
         line = flow.readline()
         l = line.split(',')
         count = 0
         base_time = float(l[1])
         sum_length = 0
-        max_length = 0
         t = 0
         while line:
             count = count + 1
@@ -40,12 +33,8 @@ def main():
                 sum_length = sum_length + length
 
             line = flow.readline()
-    #         print count 
-            
-    # print x
-    # print y
 
-    plt.plot(x, y, label="test")
+    plt.plot(x, y, label="traffic rate")
 
     plt.legend()
 
