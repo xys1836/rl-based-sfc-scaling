@@ -29,7 +29,7 @@ def traffic_rate_data(file_name, interval=1):
             length = int(l[4])
             if (time - base_time) >= interval:
                 time_slot.append(t)
-                traff_rate.append(sum_length/(time-base_time))
+                traff_rate.append(sum_length/(time-base_time)*8)
                 packet_length.append(sum_length)
                 base_time = time
                 sum_length = 0
@@ -40,14 +40,40 @@ def traffic_rate_data(file_name, interval=1):
     return time_slot, traff_rate, packet_length
 
 
-def traffic_rate_data_test():
-    [time_slot_1, traff_rate_1, packet_length_1] = traffic_rate_data('192.0.96.1-128.0.0.128.csv', 300)
-    [time_slot_2, traff_rate_2, packet_length_2] = traffic_rate_data('1.0.0.2-128.0.0.2.csv', 10)
-    time_slot_2 = [x * 10 for x in time_slot_2]
+def traffic_rate_data_test(file_name, interval):
+    [time_slot_1, traff_rate_1, packet_length_1] = traffic_rate_data(file_name, interval)
+    #[time_slot_2, traff_rate_2, packet_length_2] = traffic_rate_data('1.0.0.2-128.0.0.2.csv', 10)
+    #time_slot_2 = [x * 10 for x in time_slot_2]
     # plt.plot(time_slot_1, traff_rate_1, 'r-', time_slot_2, traff_rate_2, 'b-')
+
+    traff_rate_1 = np.array(traff_rate_1)
+    traff_rate_1 = (traff_rate_1 - traff_rate_1.min()) / (traff_rate_1.max() - traff_rate_1.min())
     plt.plot(time_slot_1, traff_rate_1)
     plt.legend()
+    plt.title(file_name)
     plt.show()
+
+def draw_rate_date(file_name, interval):
+    [time_slot, traff_rate, packet_length] = traffic_rate_data(file_name, interval)
+    traff_rate = np.array(traff_rate)
+    traff_rate = (traff_rate - traff_rate.min()) / (traff_rate.max() - traff_rate.min())
+    plt.plot(time_slot, traff_rate)
+    plt.title(file_name)
+    # plt.legend()
+    plt.show()
+
+def test():
+    for file in files(flow_file_path):
+        print(file)
+        draw_rate_date(file, 1)
+
+
+def files(directory):
+    files = []
+    for file in os.listdir(directory):
+        if os.path.isfile(os.path.join(directory, file)):
+            yield file
+
 
 def processing_capacity_test():
     capacity = processing_capacity(100, 200, 1024)
@@ -55,8 +81,14 @@ def processing_capacity_test():
 
 
 def main():
-    # processing_capacity_test()
-    traffic_rate_data_test()
+    # # processing_capacity_test()
+    file_name = '1.0.0.6-128.0.0.1.csv'
+    # file_name = '1.0.0.1-128.0.0.1.csv'
+    # # file_name = '128.0.0.1-1.0.0.6.csv'
+    # # file_name = '4.0.0.10-128.0.0.2.csv'
+    # file_name = '4.0.0.10-128.0.0.2.csv'
+    traffic_rate_data_test(file_name, 1)
+    # test()
     
 
 
